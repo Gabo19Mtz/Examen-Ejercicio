@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProjectList from "./components/ProjectList";
+import ProjectForm from "./components/ProjectForm";
+import TaskForm from "./components/TaskForm";
+import TaskList from "./components/TaskList";
+import { Container } from "@mui/material";
+import Menu from "./components/Navbar";
+import NotFound from "./components/NotFound.js"; // Asegúrate de crear este componente
 
-function App() {
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Menu />
+      <Container>
+        <Routes>
+          <Route path="/" element={<ProjectList />} />
+          <Route path="/project/new" element={<ProjectForm />} />
+          <Route path="/project/:id/edit" element={<ProjectForm />} />
+          <Route path="/task/new" element={<TaskForm />} />
+          <Route path="/task/view" element={<TaskList />} />
+          <Route path="/task/:id/edit" element={<TaskForm />} />
+          <Route path="*" element={<NotFound />} />{" "}
+          {/* Ruta para manejar errores */}
+        </Routes>
+      </Container>
+    </BrowserRouter>
   );
 }
-
-export default App;
