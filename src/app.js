@@ -1,5 +1,6 @@
 import express from "express";
 import morgan from "morgan";
+import cors from "cors";
 
 const app = express();
 
@@ -10,6 +11,7 @@ import taskRoutes from "./routes/tasks.routes.js";
 // Middlewares
 app.use(morgan("dev"));
 app.use(express.json());
+app.use(cors());
 
 // Routes
 app.use("/api/projects", projectRoutes);
