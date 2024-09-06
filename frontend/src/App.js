@@ -6,6 +6,7 @@ import TaskList from "./components/TaskList";
 import { Container } from "@mui/material";
 import Menu from "./components/Navbar";
 import NotFound from "./components/NotFound.js"; // Asegúrate de crear este componente
+import TaskProjectList from "./components/TaskProjectList.js";
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/task/new" element={<TaskForm />} />
           <Route path="/task/view" element={<TaskList />} />
           <Route path="/task/:id/edit" element={<TaskForm />} />
+          <Route path="/projects/:id/tasks" element={<TaskProjectList />} />
           <Route path="*" element={<NotFound />} />{" "}
           {/* Ruta para manejar errores */}
         </Routes>

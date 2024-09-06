@@ -23,29 +23,24 @@ export default function ProjectForm() {
   const navigate = useNavigate();
   const params = useParams();
 
+  const API_URL = "http://localhost:5000/projects";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     setLoading(true);
 
     try {
-      if (editing) {
-        await fetch(`http://localhost:5000/projects/${params.id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(project),
-        });
-      } else {
-        await fetch("http://localhost:5000/projects", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(project),
-        });
-      }
+      const url = editing ? `${API_URL}/${params.id}` : API_URL;
+      const method = editing ? "PUT" : "POST";
+
+      await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(project),
+      });
+
       navigate("/");
     } catch (error) {
       console.error("Error saving project:", error);
@@ -55,12 +50,21 @@ export default function ProjectForm() {
     }
   };
 
-  const handleChange = (e) =>
-    setProject({ ...project, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === "priority") {
+      // Ensure priority is a number between 1 and 10
+      if (value === "" || (value >= 1 && value <= 10)) {
+        setProject({ ...project, [name]: value });
+      }
+    } else {
+      setProject({ ...project, [name]: value });
+    }
+  };
 
   const loadProject = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/projects/${id}`);
+      const res = await fetch(`${API_URL}/${id}`);
       if (!res.ok) throw new Error("Failed to fetch project");
       const data = await res.json();
       setProject({
@@ -88,7 +92,7 @@ export default function ProjectForm() {
       alignItems="center"
       justifyContent="center"
     >
-      <Grid2 item xs={3}>
+      <Grid2 item xs={12} sm={8} md={6} lg={4}>
         <Card
           sx={{ mt: 5 }}
           style={{
@@ -114,7 +118,12 @@ export default function ProjectForm() {
               />
               <TextField
                 variant="filled"
-                label="Ingresa la prioridad"
+                label="Ingresa la prioridad (1-10)"
+                type="number"
+                input={{
+                  min: 1,
+                  max: 10,
+                }}
                 sx={{
                   display: "block",
                   margin: ".5rem 0",
