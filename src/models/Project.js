@@ -29,4 +29,7 @@ Project.hasMany(Task, {
   foreinkey: "projectId",
   sourceKey: "id",
 });
-Task.belongsTo(Project, { foreinkey: "projectId", targetId: "id" });
+Task.belongsTo(Project, {
+  foreinkey: "projectId",
+  targetId: "id",
+});

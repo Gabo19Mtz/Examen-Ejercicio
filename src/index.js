@@ -5,7 +5,7 @@ import "./models/Task.js";
 
 async function main() {
   try {
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     app.listen(5000);
     console.log("Server listening on port", 5000);
   } catch (error) {
