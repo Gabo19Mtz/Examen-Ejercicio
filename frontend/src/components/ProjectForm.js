@@ -75,7 +75,6 @@ export default function ProjectForm() {
       setEditing(true);
     } catch (error) {
       console.error("Error loading project:", error);
-      // Optionally, handle the error (e.g., show a message to the user)
     }
   };
 
