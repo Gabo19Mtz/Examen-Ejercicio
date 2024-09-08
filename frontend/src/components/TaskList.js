@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function TasksList() {
   const [tasks, setTasks] = useState([]);
+  const [projects, setProjects] = useState({});
   const navigate = useNavigate();
 
   // Cargar tareas desde el backend
@@ -13,6 +14,17 @@ export default function TasksList() {
       if (!response.ok) throw new Error("Failed to fetch tasks");
       const data = await response.json();
       setTasks(data);
+
+      // Agrupar tareas por projectId
+      const groupedTasks = data.reduce((acc, task) => {
+        const projectName = `Proyecto ${task.projectId}`;
+        if (!acc[projectName]) {
+          acc[projectName] = [];
+        }
+        acc[projectName].push(task);
+        return acc;
+      }, {});
+      setProjects(groupedTasks);
     } catch (error) {
       console.error("Error loading tasks:", error);
     }
@@ -25,6 +37,18 @@ export default function TasksList() {
         method: "DELETE",
       });
       setTasks(tasks.filter((task) => task.id !== id));
+
+      // Re-agrupar tareas después de eliminar una
+      const updatedTasks = tasks.filter((task) => task.id !== id);
+      const groupedTasks = updatedTasks.reduce((acc, task) => {
+        const projectName = `Proyecto ${task.projectId}`;
+        if (!acc[projectName]) {
+          acc[projectName] = [];
+        }
+        acc[projectName].push(task);
+        return acc;
+      }, {});
+      setProjects(groupedTasks);
     } catch (error) {
       console.error("Error deleting task:", error);
     }
@@ -38,37 +62,45 @@ export default function TasksList() {
   return (
     <>
       <Typography variant="h4" gutterBottom>
-        Tareas
+        Tareas por Proyecto
       </Typography>
-      {tasks.map((task) => (
-        <Card key={task.id} sx={{ mb: 2 }}>
-          <CardContent
-            sx={{ display: "flex", justifyContent: "space-between" }}
-          >
-            <div>
-              <Typography variant="h6">{task.name}</Typography>
-              <Typography>{task.done ? "Completada" : "Pendiente"}</Typography>
-              <Typography>Proyecto ID: {task.projectId}</Typography>
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => navigate(`/task/${task.id}/edit`)}
+      {Object.keys(projects).map((projectName) => (
+        <div key={projectName}>
+          <Typography variant="h5" gutterBottom>
+            {projectName}
+          </Typography>
+          {projects[projectName].map((task) => (
+            <Card key={task.id} sx={{ mb: 2 }}>
+              <CardContent
+                sx={{ display: "flex", justifyContent: "space-between" }}
               >
-                Editar
-              </Button>
-              <Button
-                variant="contained"
-                color="warning"
-                onClick={() => handleDelete(task.id)}
-                sx={{ ml: 1 }}
-              >
-                Eliminar
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+                <div>
+                  <Typography variant="h6">{task.name}</Typography>
+                  <Typography>
+                    {task.done ? "Completada" : "Pendiente"}
+                  </Typography>
+                </div>
+                <div>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => navigate(`/task/${task.id}/edit`)}
+                  >
+                    Editar
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="warning"
+                    onClick={() => handleDelete(task.id)}
+                    sx={{ ml: 1 }}
+                  >
+                    Eliminar
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       ))}
     </>
   );
