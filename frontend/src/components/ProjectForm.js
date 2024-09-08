@@ -43,8 +43,6 @@ export default function ProjectForm() {
 
       navigate("/");
     } catch (error) {
-      console.error("Error saving project:", error);
-      // Optionally, show a message to the user about the error
     } finally {
       setLoading(false);
     }
@@ -53,7 +51,6 @@ export default function ProjectForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === "priority") {
-      // Ensure priority is a number between 1 and 10
       if (value === "" || (value >= 1 && value <= 10)) {
         setProject({ ...project, [name]: value });
       }

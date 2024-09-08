@@ -44,13 +44,6 @@ export default function Navbar() {
             >
               Ver Tareas
             </Button>
-            <Button
-              variant="contained"
-              sx={{ backgroundColor: "greenyellow", color: "#000", ml: 2 }}
-              onClick={() => navigate("/projects/:id/tasks")}
-            >
-              Ver tareas de proyectos
-            </Button>
           </Toolbar>
         </Container>
       </AppBar>

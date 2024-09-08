@@ -7,7 +7,6 @@ export default function TasksList() {
   const [projects, setProjects] = useState({});
   const navigate = useNavigate();
 
-  // Cargar tareas desde el backend
   const loadTasks = async () => {
     try {
       const response = await fetch("http://localhost:5000/tasks");
