@@ -14,9 +14,11 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
+
 export default function ComputerForm() {
   const [computer, setComputers] = useState({
     name: "",
+    photo: "",
     laboratoriesId: "",
   });
 
@@ -114,6 +116,14 @@ export default function ComputerForm() {
                 value={computer.name}
                 onChange={handleChange}
               />
+              <TextField
+                label="Ingresa una url"
+                variant="filled"
+                sx={{ display: "block", margin: ".5rem 0" }}
+                name="photo"
+                value={computer.photo}
+                onChange={handleChange}
+              ></TextField>
 
               <FormControl fullWidth sx={{ margin: ".5rem 0" }}>
                 <InputLabel id="project-label">
@@ -138,7 +148,9 @@ export default function ComputerForm() {
                 variant="contained"
                 color="primary"
                 type="submit"
-                disabled={!computer.name || !computer.laboratoriesId}
+                disabled={
+                  !computer.name || !computer.photo || !computer.laboratoriesId
+                }
               >
                 {loading ? (
                   <CircularProgress color="inherit" size={24} />
