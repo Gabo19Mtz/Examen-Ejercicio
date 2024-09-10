@@ -14,40 +14,40 @@ import {
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-export default function TaskForm() {
-  const [task, setTask] = useState({
+export default function ComputerForm() {
+  const [computer, setComputers] = useState({
     name: "",
-    projectId: "",
+    laboratoriesId: "",
   });
 
   const [loading, setLoading] = useState(false);
   const [editing, setEditing] = useState(false);
-  const [projects, setProjects] = useState([]);
+  const [laboratories, setLaboratories] = useState([]);
 
   const navigate = useNavigate();
   const params = useParams();
 
   useEffect(() => {
-    const fetchProjects = async () => {
-      const res = await fetch("http://localhost:5000/projects");
+    const fetchLaboratories = async () => {
+      const res = await fetch("http://localhost:5000/laboratory");
       const data = await res.json();
-      setProjects(data);
+      setLaboratories(data);
     };
 
-    fetchProjects();
+    fetchLaboratories();
 
     if (params.id) {
-      const fetchTask = async () => {
-        const res = await fetch(`http://localhost:5000/tasks/${params.id}`);
+      const fetchComputer = async () => {
+        const res = await fetch(`http://localhost:5000/computers/${params.id}`);
         const data = await res.json();
-        setTask({
+        setComputers({
           name: data.name,
-          projectId: data.projectId,
+          laboratoriesId: data.laboratoriesId,
         });
         setEditing(true);
       };
 
-      fetchTask();
+      fetchComputer();
     }
   }, [params.id]);
 
@@ -58,24 +58,24 @@ export default function TaskForm() {
 
     try {
       if (editing) {
-        await fetch(`http://localhost:5000/tasks/${params.id}`, {
+        await fetch(`http://localhost:5000/computers/${params.id}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(task),
+          body: JSON.stringify(computer),
         });
       } else {
-        await fetch("http://localhost:5000/tasks", {
+        await fetch("http://localhost:5000/computers", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(task),
+          body: JSON.stringify(computer),
         });
       }
 
-      navigate("/task/view");
+      navigate("/computer/view");
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -84,7 +84,7 @@ export default function TaskForm() {
   };
 
   const handleChange = (e) =>
-    setTask({ ...task, [e.target.name]: e.target.value });
+    setComputers({ ...computer, [e.target.name]: e.target.value });
 
   return (
     <Grid2
@@ -102,33 +102,33 @@ export default function TaskForm() {
           }}
         >
           <Typography variant="h5" textAlign="center" color="white">
-            {editing ? "Editar Tarea" : "Crear Tarea"}
+            {editing ? "Editar Computador" : "Crear Computador"}
           </Typography>
           <CardContent>
             <form onSubmit={handleSubmit}>
               <TextField
                 variant="filled"
-                label="Ingresa el nombre de la tarea"
+                label="Ingresa el nombre del computador"
                 sx={{ display: "block", margin: ".5rem 0" }}
                 name="name"
-                value={task.name}
+                value={computer.name}
                 onChange={handleChange}
               />
 
               <FormControl fullWidth sx={{ margin: ".5rem 0" }}>
                 <InputLabel id="project-label">
-                  Selecciona un proyecto
+                  Selecciona un laboratorio
                 </InputLabel>
                 <Select
                   labelId="project-label"
-                  name="projectId"
-                  value={task.projectId}
+                  name="laboratoriesId"
+                  value={computer.laboratoriesId}
                   onChange={handleChange}
-                  label="Selecciona un proyecto"
+                  label="Selecciona un laboratorio"
                 >
-                  {projects.map((project) => (
-                    <MenuItem key={project.id} value={project.id}>
-                      {project.name}
+                  {laboratories.map((laboratory) => (
+                    <MenuItem key={laboratory.id} value={laboratory.id}>
+                      {laboratory.name}
                     </MenuItem>
                   ))}
                 </Select>
@@ -138,7 +138,7 @@ export default function TaskForm() {
                 variant="contained"
                 color="primary"
                 type="submit"
-                disabled={!task.name || !task.projectId}
+                disabled={!computer.name || !computer.laboratoriesId}
               >
                 {loading ? (
                   <CircularProgress color="inherit" size={24} />

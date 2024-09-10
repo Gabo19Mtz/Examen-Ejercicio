@@ -1,8 +1,8 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 
-export const Task = sequelize.define(
-  "tasks",
+export const Computers = sequelize.define(
+  "computers",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -11,10 +11,6 @@ export const Task = sequelize.define(
     },
     name: {
       type: DataTypes.STRING,
-    },
-    done: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
     },
   },
   {

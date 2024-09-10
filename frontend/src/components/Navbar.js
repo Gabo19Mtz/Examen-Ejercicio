@@ -18,31 +18,31 @@ export default function Navbar() {
           <Toolbar>
             <Typography variant="h6" sx={{ flexGrow: 1 }}>
               <Link to="/" style={{ textDecoration: "none", color: "inherit" }}>
-                Inicio
+                Ver laboratorios
               </Link>
             </Typography>
             <Button
               variant="contained"
               color="primary"
               sx={{ mr: 2 }}
-              onClick={() => navigate("/project/new")}
+              onClick={() => navigate("/laboratory/new")}
             >
-              Nuevo Proyecto
+              Nuevo laboratorio
             </Button>
             <Button
               variant="contained"
               color="secondary"
               sx={{ mr: 2 }}
-              onClick={() => navigate("/task/new")}
+              onClick={() => navigate("/computer/new")}
             >
-              Nueva Tarea
+              Nuevo Computador
             </Button>
             <Button
               variant="contained"
               sx={{ backgroundColor: "#d6cfcf", color: "#000" }}
-              onClick={() => navigate("/task/view")}
+              onClick={() => navigate("/computer/view")}
             >
-              Ver Tareas
+              Ver Computadores
             </Button>
           </Toolbar>
         </Container>

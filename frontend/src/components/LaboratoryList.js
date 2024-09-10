@@ -2,41 +2,43 @@ import { Button, Card, CardContent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function ProjectList() {
-  const [projects, setProjects] = useState([]);
+export default function LaboratoryList() {
+  const [laboratories, setLaboratories] = useState([]);
   const navigate = useNavigate();
 
-  const loadProjects = async () => {
-    const response = await fetch("http://localhost:5000/projects");
+  const loadLaboratories = async () => {
+    const response = await fetch("http://localhost:5000/laboratory");
     const data = await response.json();
-    setProjects(data);
+    setLaboratories(data);
   };
 
   const handleDelete = async (id) => {
     try {
-      await fetch(`http://localhost:5000/projects/${id}`, {
+      await fetch(`http://localhost:5000/laboratory/${id}`, {
         method: "DELETE",
       });
 
-      setProjects(projects.filter((project) => project.id !== id));
+      setLaboratories(
+        laboratories.filter((laboratory) => laboratory.id !== id)
+      );
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    loadProjects();
+    loadLaboratories();
   }, []);
 
   return (
     <>
-      <h1>Proyectos</h1>
-      {projects.map((project) => (
+      <h1>Laboratorios</h1>
+      {laboratories.map((laboratory) => (
         <Card
           style={{
             marginBottom: ".7rem",
           }}
-          key={project.id}
+          key={laboratory.id}
         >
           <CardContent
             style={{
@@ -45,22 +47,21 @@ export default function ProjectList() {
             }}
           >
             <div>
-              <Typography>{project.name}</Typography>
-              <Typography>{project.priority}</Typography>
-              <Typography>{project.description}</Typography>
+              <Typography>{laboratory.name}</Typography>
+              <Typography>{laboratory.description}</Typography>
             </div>
             <div>
               <Button
                 variant="contained"
                 color="inherit"
-                onClick={() => navigate(`/project/${project.id}/edit`)}
+                onClick={() => navigate(`/laboratory/${laboratory.id}/edit`)}
               >
                 Editar
               </Button>
               <Button
                 variant="contained"
                 color="warning"
-                onClick={() => handleDelete(project.id)}
+                onClick={() => handleDelete(laboratory.id)}
                 style={{
                   marginLeft: ".5rem",
                 }}

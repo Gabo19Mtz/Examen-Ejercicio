@@ -1,9 +1,9 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { Task } from "./Task.js";
+import { Computers } from "./Computers.js";
 
-export const Project = sequelize.define(
-  "projects",
+export const Laboratories = sequelize.define(
+  "laboratories",
   {
     id: {
       type: DataTypes.INTEGER,
@@ -12,9 +12,6 @@ export const Project = sequelize.define(
     },
     name: {
       type: DataTypes.STRING,
-    },
-    priority: {
-      type: DataTypes.INTEGER,
     },
     description: {
       type: DataTypes.STRING,
@@ -25,11 +22,11 @@ export const Project = sequelize.define(
   }
 );
 
-Project.hasMany(Task, {
-  foreignKey: "projectId",
+Laboratories.hasMany(Computers, {
+  foreignKey: "laboratoriesId",
   sourceKey: "id",
 });
-Task.belongsTo(Project, {
-  foreignKey: "projectId",
+Computers.belongsTo(Laboratories, {
+  foreignKey: "laboratoriesId",
   targetKey: "id",
 });
